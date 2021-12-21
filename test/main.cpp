@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <queue>
 #include "softHeap.h"
 using namespace std;
 
@@ -12,7 +11,6 @@ int main() {
     int r;
     cin >> r;
     Softheap sh = Softheap(r);
-    priority_queue<int, vector<int>, greater<>> pq;
     int i = 1, value, iCount = 0, dCount = 0;
     char op;
     while (cin >> op){

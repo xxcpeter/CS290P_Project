@@ -7,7 +7,7 @@
 #include "ilcell.h"
 #include "node.h"
 #include "head.h"
-const int INF = 10000000;
+const int INF = INT32_MAX;
 
 
 class Softheap {

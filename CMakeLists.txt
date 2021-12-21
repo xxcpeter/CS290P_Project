@@ -16,3 +16,9 @@ add_executable(softHeapTest
 target_link_libraries(softHeapTest
         PRIVATE
         softHeap)
+
+add_executable(speedTest
+        test/speedTest.cpp)
+target_link_libraries(speedTest
+        PRIVATE
+        softHeap)
