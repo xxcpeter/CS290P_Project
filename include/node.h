@@ -14,6 +14,29 @@ public:
     Ilcell *il_tail;
     Node *next;
     Node *child;
-    Node() {};
+
+    Node() :
+        ckey(0),
+        rank(0),
+        il_head(nullptr),
+        il_tail(nullptr),
+        next(nullptr),
+        child(nullptr) {}
+
+    Node(int k, int r, Ilcell *il_h, Ilcell *il_t) :
+        ckey(k),
+        rank(r),
+        il_head(il_h),
+        il_tail(il_t),
+        next(nullptr),
+        child(nullptr) {}
+
+    Node(int k, int r, Ilcell *il_h, Ilcell *il_t, Node *n, Node *c) :
+        ckey(k),
+        rank(r),
+        il_head(il_h),
+        il_tail(il_t),
+        next(n),
+        child(c) {}
 };
 #endif //SOFTHEAP_NODE_H

@@ -8,9 +8,13 @@ class Ilcell {
 public:
     int key;
     Ilcell *next;
-    Ilcell() {};
-    Ilcell(int key) :
-        key(key),
+
+    Ilcell() :
+        key(0),
+        next(nullptr) {}
+
+    Ilcell(int k) :
+        key(k),
         next(nullptr) {}
 };
 #endif //SOFTHEAP_ILCELL_H

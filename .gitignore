@@ -36,3 +36,9 @@
 
 # CMake
 cmake-build-debug
+
+# vscode
+.vscode
+
+# data dir
+data

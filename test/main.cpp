@@ -8,5 +8,38 @@ using namespace std;
 
 
 int main() {
-    cout << "Hello Soft Heap" << endl;
+    int r;
+    cin >> r;
+    Softheap sh = Softheap(r);
+    int i = 1, value, iCount = 0, dCount = 0;
+    char op;
+    while (cin >> op){
+        bool exit = false;
+        switch(op){
+            case 'i':
+                cin >> value;
+                sh.insert(value);
+                cout << i++ << ": insert " << value << endl;
+                iCount++;
+                break;
+            case 'd':
+                if (iCount == dCount) {
+                    cout << "Empty heap!" << endl;
+                    break;
+                }
+                value = sh.deleteMin();
+                cout << i++ << ": delete " << value << endl;
+                dCount++;
+                break;
+            case 'e':
+                cout << i++ << ": exit" << endl;
+                cout << "insert: " << iCount << endl;
+                cout << "delete: " << dCount << endl;
+                exit = true;
+                break;
+            default:
+                break;
+        }
+        if (exit) break;
+    }
 }
