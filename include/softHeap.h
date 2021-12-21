@@ -20,6 +20,8 @@ public:
     void insert(int newKey);
     // Pop out the smallest ckey
     int deleteMin();
+    /* prints the soft heap */
+    void printSoftheap();
 
 private:
     int m_r;        // rank
@@ -30,5 +32,7 @@ private:
     void fix_minList(Head *h);
     // Rearrange the tree when deleting
     Node* sift(Node *v);
+    // Recursively print node
+    void printNode(Node* toPrint, int spaces, int length);
 };
 #endif //CS290P_PROJECT_SOFTHEAP_H

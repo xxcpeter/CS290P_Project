@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <cmath>
 #include "softHeap.h"
 using namespace std;
 
@@ -161,4 +162,37 @@ Node* Softheap::sift(Node *v) {
         }
     }
     return v;
+}
+
+
+void Softheap::printSoftheap() {
+    std::cout << "Printing heap\nThreshold: " << this->m_r << "\n" << std::endl;
+    for (Head* tmpH = this->m_header->next; tmpH != this->m_tail; tmpH = tmpH->next) {
+        std::cout << "| Head Rank: " << tmpH->rank << " Addr:" << tmpH << " SuffixMin: " << tmpH->suffix_min << "\n" << std::endl;
+        if (tmpH->queue != nullptr) printNode(tmpH->queue, 0, 0);
+    }
+}
+
+
+void Softheap::printNode(Node* toPrint, int spaces, int length) {
+    int space = 0;
+
+    /* add starting spaces */
+    space += 2 + (int)(log10((double)toPrint->rank)) + 1;
+
+    /* add items */
+    for (Ilcell* tmpI = toPrint->il_head; tmpI != nullptr; tmpI = tmpI->next) {
+        space += (int)(log10((double)tmpI->key)) + 1;
+        if (tmpI->next != nullptr) space++;
+    }
+    space += 2;
+
+    /* add ckey */
+    space += 2 + (int)(log10((double)toPrint->ckey)) + 1;
+
+    /* print the next node */
+    if (toPrint->next != nullptr) printNode(toPrint->next, 0, length + space + 2);
+
+    /* print the child */
+    if (toPrint->child != nullptr) printNode(toPrint->child, length + spaces, 0);
 }

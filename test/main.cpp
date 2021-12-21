@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <queue>
 #include "softHeap.h"
 using namespace std;
 
@@ -11,6 +12,7 @@ int main() {
     int r;
     cin >> r;
     Softheap sh = Softheap(r);
+    priority_queue<int, vector<int>, greater<>> pq;
     int i = 1, value, iCount = 0, dCount = 0;
     char op;
     while (cin >> op){
@@ -30,6 +32,10 @@ int main() {
                 value = sh.deleteMin();
                 cout << i++ << ": delete " << value << endl;
                 dCount++;
+                break;
+            case 'p':
+                cout << i++ << ": print heap" << endl;
+                sh.printSoftheap();
                 break;
             case 'e':
                 cout << i++ << ": exit" << endl;
