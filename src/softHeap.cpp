@@ -155,11 +155,42 @@ bool Softheap::del(int key) {
             // Corruption
             if (tmp->il_head != nullptr) {
                 if (tmp->il_head->key == key) {
+                    // if only one cell in il
+                    if (tmp->il_head == tmp->il_tail) {
+                        if (tmp->ckey == key) {
+                            // get away tmp from tree
+                            Node tmpCp = *tmp;
+                            // if tmp is not root
+                            if (h->queue != tmp) {
+                                // set itself INF
+                                tmp->ckey = INF;
+                                // delete it
+                                sift(h->queue);
+                            } else {
+                                // tmp is root, then remove head
+                                h->prev->next = h->next;
+                                h->next->prev = h->prev;
+                                fix_minList(h->prev);
+                            }
+
+                            // meld back child
+                            Node *ttmp = &tmpCp;
+                            while (ttmp->next != nullptr) {
+                                meld(ttmp->child);
+                                ttmp = ttmp->next;
+                            }
+                            return true;
+                        } else {
+                            tmp->il_tail = tmp->il_head->next;
+                        }
+                    }
                     tmp->il_head = tmp->il_head->next;
                     return true;
                 }
                 else for (Ilcell *il = tmp->il_head; il != tmp->il_tail; il = il->next) {
                     if (il->next->key == key) {
+                        // remove the last cell
+                        if (il->next->next == nullptr) tmp->il_tail = il;
                         il->next = il->next->next;
                         return true;
                     }
@@ -167,15 +198,19 @@ bool Softheap::del(int key) {
             }
             // No corruption, check ckey
             else if (tmp->ckey == key) {
-                // meld back child
-                while (tmp->next != nullptr) {
-                    meld(tmp->child);
-                    tmp = tmp->next;
-                }
+                // get away tmp from tree
+                Node tmpCp = *tmp;
                 // set itself INF
                 tmp->ckey = INF;
                 // delete it
                 sift(h->queue);
+
+                // meld back child
+                Node *ttmp = &tmpCp;
+                while (ttmp->next != nullptr) {
+                    meld(ttmp->child);
+                    ttmp = ttmp->next;
+                }
                 return true;
             }
         }
