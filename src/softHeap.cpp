@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <cmath>
+#include <stack>
 #include "softHeap.h"
 using namespace std;
 
@@ -103,6 +103,87 @@ int Softheap::deleteMin() {
 }
 
 
+int Softheap::findMin() {
+    Head *h = m_header->next->suffix_min;
+    while (h->queue->il_head == nullptr) {
+        Node *tmp = h->queue;
+        int childCount = 0;
+        while (tmp->next != nullptr) {
+            tmp = tmp->next;
+            childCount++;
+        }
+
+        // remove tree if not rank-invariant (too few children)
+        if (childCount < h->rank/2) {
+            h->prev->next = h->next;
+            h->next->prev = h->prev;
+            fix_minList(h->prev);
+
+            // then meld back its children
+            tmp = h->queue;
+            while (tmp->next != nullptr) {
+                meld(tmp->child);
+                tmp = tmp->next;
+            }
+        } else {
+            h->queue = sift(h->queue);
+            if (h->queue->ckey == INF) {
+                h->prev->next = h->next;
+                h->next->prev = h->prev;
+                h = h->prev;
+            }
+            fix_minList(h);
+        }
+        h = m_header->next->suffix_min;
+    }
+    return h->queue->il_head->key;
+}
+
+
+bool Softheap::del(int key) {
+    // Search every head
+    Head *h = new Head();
+    for (h = m_header->next; h != m_tail; h = h->next) {
+        stack<Node *> stk;
+        stk.push(h->queue);
+        while (!stk.empty()) {
+            Node *tmp = stk.top();
+            stk.pop();
+            if (tmp->child != nullptr) stk.push(tmp->child);
+            if (tmp->child != nullptr) stk.push(tmp->next);
+
+            // Corruption
+            if (tmp->il_head != nullptr) {
+                if (tmp->il_head->key == key) {
+                    tmp->il_head = tmp->il_head->next;
+                    return true;
+                }
+                else for (Ilcell *il = tmp->il_head; il != tmp->il_tail; il = il->next) {
+                    if (il->next->key == key) {
+                        il->next = il->next->next;
+                        return true;
+                    }
+                }
+            }
+            // No corruption, check ckey
+            else if (tmp->ckey == key) {
+                // meld back child
+                while (tmp->next != nullptr) {
+                    meld(tmp->child);
+                    tmp = tmp->next;
+                }
+                // set itself INF
+                tmp->ckey = INF;
+                // delete it
+                sift(h->queue);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 void Softheap::fix_minList(Head *h) {
     Head *tmpMin;
     if (h->next == m_tail) tmpMin = h;
@@ -164,35 +245,3 @@ Node* Softheap::sift(Node *v) {
     return v;
 }
 
-
-void Softheap::printSoftheap() {
-    std::cout << "Printing heap\nThreshold: " << this->m_r << "\n" << std::endl;
-    for (Head* tmpH = this->m_header->next; tmpH != this->m_tail; tmpH = tmpH->next) {
-        std::cout << "| Head Rank: " << tmpH->rank << " Addr:" << tmpH << " SuffixMin: " << tmpH->suffix_min << "\n" << std::endl;
-        if (tmpH->queue != nullptr) printNode(tmpH->queue, 0, 0);
-    }
-}
-
-
-void Softheap::printNode(Node* toPrint, int spaces, int length) {
-    int space = 0;
-
-    /* add starting spaces */
-    space += 2 + (int)(log10((double)toPrint->rank)) + 1;
-
-    /* add items */
-    for (Ilcell* tmpI = toPrint->il_head; tmpI != nullptr; tmpI = tmpI->next) {
-        space += (int)(log10((double)tmpI->key)) + 1;
-        if (tmpI->next != nullptr) space++;
-    }
-    space += 2;
-
-    /* add ckey */
-    space += 2 + (int)(log10((double)toPrint->ckey)) + 1;
-
-    /* print the next node */
-    if (toPrint->next != nullptr) printNode(toPrint->next, 0, length + space + 2);
-
-    /* print the child */
-    if (toPrint->child != nullptr) printNode(toPrint->child, length + spaces, 0);
-}

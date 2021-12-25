@@ -11,10 +11,11 @@ int main() {
     int r;
     cin >> r;
     Softheap sh = Softheap(r);
-    int i = 1, value, iCount = 0, dCount = 0;
+    int i = 1, iCount = 0, dCount = 0, pCount = 0;
     char op;
     while (cin >> op){
         bool exit = false;
+        int value;
         switch(op){
             case 'i':
                 cin >> value;
@@ -22,23 +23,36 @@ int main() {
                 cout << i++ << ": insert " << value << endl;
                 iCount++;
                 break;
+            case 'f':
+                if (iCount == pCount + dCount) {
+                    cout << "Empty heap!" << endl;
+                    break;
+                }
+                value = sh.findMin();
+                cout << i++ << ": findMin " << value << endl;
+                pCount++;
+                break;
             case 'd':
-                if (iCount == dCount) {
+                cin >> value;
+                if (sh.del(value))
+                    cout << i++ << ": delete " << value << endl,dCount++;
+                else
+                    cout << i++ << ": delete " << value << " not found" << endl;
+                break;
+            case 'p':
+                if (iCount == pCount + dCount) {
                     cout << "Empty heap!" << endl;
                     break;
                 }
                 value = sh.deleteMin();
-                cout << i++ << ": delete " << value << endl;
-                dCount++;
-                break;
-            case 'p':
-                cout << i++ << ": print heap" << endl;
-                sh.printSoftheap();
+                cout << i++ << ": pop " << value << endl;
+                pCount++;
                 break;
             case 'e':
                 cout << i++ << ": exit" << endl;
                 cout << "insert: " << iCount << endl;
                 cout << "delete: " << dCount << endl;
+                cout << "pop: " << pCount << endl;
                 exit = true;
                 break;
             default:

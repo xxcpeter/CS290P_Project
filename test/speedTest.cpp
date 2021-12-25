@@ -40,7 +40,7 @@ int main() {
     }
     end = clock();
     cost = (double)(end - start) / CLOCKS_PER_SEC;
-    cout << "\tDelete: " << cost * 1000 << "ms" << endl;
+    cout << "\tPop: " << cost * 1000 << "ms" << endl;
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     cout << "Priority Queue: " << endl;
@@ -59,7 +59,7 @@ int main() {
     }
     end = clock();
     cost = (double)(end - start) / CLOCKS_PER_SEC;
-    cout << "\tDelete: " << cost * 1000 << "ms" << endl;
+    cout << "\tPop: " << cost * 1000 << "ms" << endl;
 
 //    int error = 0;
 //    for (int i = 0; i < N; ++i)  error += (shOut[i] != pqOut[i]);
