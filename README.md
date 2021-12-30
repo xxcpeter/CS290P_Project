@@ -2,11 +2,16 @@
 The Project of CS290P implementing Soft Heap and Fibonacci Heap
 
 ### Operations
-* create(Heap)
-* insert(Heap,key)
-* delete(Heap,key)
-* deletemin/pop(Heap)
+#### Fibonacci heap
+* create()
+* insert(key)
+* meld(heap)
+* decrease(key,value)
+* pop()
 
-optional
-* meld(Heap,Heap')
-* findmin(Heap)
+#### Soft heap
+* create()
+* insert(key)
+* meld(heap)
+* delete(key)
+* pop()
