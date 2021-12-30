@@ -20,8 +20,6 @@ public:
     void insert(int newKey);
     // Pop out the smallest ckey
     int deleteMin();
-    // Find the smallest ckey
-    int findMin();
     // Delete the node or item if exist
     bool del(int key);
 

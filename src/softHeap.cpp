@@ -103,43 +103,6 @@ int Softheap::deleteMin() {
 }
 
 
-int Softheap::findMin() {
-    Head *h = m_header->next->suffix_min;
-    while (h->queue->il_head == nullptr) {
-        Node *tmp = h->queue;
-        int childCount = 0;
-        while (tmp->next != nullptr) {
-            tmp = tmp->next;
-            childCount++;
-        }
-
-        // remove tree if not rank-invariant (too few children)
-        if (childCount < h->rank/2) {
-            h->prev->next = h->next;
-            h->next->prev = h->prev;
-            fix_minList(h->prev);
-
-            // then meld back its children
-            tmp = h->queue;
-            while (tmp->next != nullptr) {
-                meld(tmp->child);
-                tmp = tmp->next;
-            }
-        } else {
-            h->queue = sift(h->queue);
-            if (h->queue->ckey == INF) {
-                h->prev->next = h->next;
-                h->next->prev = h->prev;
-                h = h->prev;
-            }
-            fix_minList(h);
-        }
-        h = m_header->next->suffix_min;
-    }
-    return h->queue->il_head->key;
-}
-
-
 bool Softheap::del(int key) {
     // Search every head
     Head *h = new Head();

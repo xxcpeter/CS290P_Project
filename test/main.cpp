@@ -10,6 +10,7 @@ using namespace std;
 int main() {
     int r;
     cin >> r;
+    cout << "r = " << r << endl;
     Softheap sh = Softheap(r);
     int i = 1, iCount = 0, dCount = 0, pCount = 0;
     char op;
@@ -23,25 +24,16 @@ int main() {
                 cout << i++ << ": insert " << value << endl;
                 iCount++;
                 break;
-            case 'f':
-                if (iCount == pCount + dCount) {
-                    cout << "Empty heap!" << endl;
-                    break;
-                }
-                value = sh.findMin();
-                cout << i++ << ": findMin " << value << endl;
-                pCount++;
-                break;
             case 'd':
                 cin >> value;
                 if (sh.del(value))
                     cout << i++ << ": delete " << value << endl,dCount++;
                 else
-                    cout << i++ << ": delete " << value << " not found" << endl;
+                    cout << i++ << ": delete " << value << " fail! Not found!" << endl;
                 break;
             case 'p':
                 if (iCount == pCount + dCount) {
-                    cout << "Empty heap!" << endl;
+                    cout << i++ << ": pop fail! Empty heap!" << endl;
                     break;
                 }
                 value = sh.deleteMin();
