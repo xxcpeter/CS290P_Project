@@ -22,3 +22,6 @@ add_executable(speedTest
 target_link_libraries(speedTest
         PRIVATE
         softHeap)
+
+add_executable(fibonacciTest
+        src/fibonacci_heap.cpp)
